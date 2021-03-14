@@ -5,10 +5,13 @@ import com.grusker.publicmessageboard.dtos.MessageInputDto;
 import com.grusker.publicmessageboard.dtos.MessageOutputDto;
 import com.grusker.publicmessageboard.services.MessageService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,7 +27,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = MessageController.class)
+@WithMockUser(username = "Admin", password = "admin")
 public class MessageControllerTest {
     @Autowired
     private MockMvc mockMvc;
