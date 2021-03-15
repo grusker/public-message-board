@@ -1,4 +1,4 @@
-package com.grusker.publicmessageboard.entities;
+package com.grusker.publicmessageboard.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

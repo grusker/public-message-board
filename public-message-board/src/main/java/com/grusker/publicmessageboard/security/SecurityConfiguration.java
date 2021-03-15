@@ -1,4 +1,4 @@
-package com.grusker.publicmessageboard.config;
+package com.grusker.publicmessageboard.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

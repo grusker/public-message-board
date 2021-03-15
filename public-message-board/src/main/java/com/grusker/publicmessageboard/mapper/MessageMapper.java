@@ -1,8 +1,8 @@
-package com.grusker.publicmessageboard.mappers;
+package com.grusker.publicmessageboard.mapper;
 
-import com.grusker.publicmessageboard.dtos.MessageInputDto;
-import com.grusker.publicmessageboard.dtos.MessageOutputDto;
-import com.grusker.publicmessageboard.entities.MessageEntity;
+import com.grusker.publicmessageboard.dto.MessageInputDto;
+import com.grusker.publicmessageboard.dto.MessageOutputDto;
+import com.grusker.publicmessageboard.entity.MessageEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

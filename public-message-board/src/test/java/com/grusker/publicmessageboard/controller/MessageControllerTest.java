@@ -1,9 +1,9 @@
-package com.grusker.publicmessageboard.controllers;
+package com.grusker.publicmessageboard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grusker.publicmessageboard.dtos.MessageInputDto;
-import com.grusker.publicmessageboard.dtos.MessageOutputDto;
-import com.grusker.publicmessageboard.services.MessageService;
+import com.grusker.publicmessageboard.dto.MessageInputDto;
+import com.grusker.publicmessageboard.dto.MessageOutputDto;
+import com.grusker.publicmessageboard.service.MessageService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

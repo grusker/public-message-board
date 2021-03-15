@@ -1,8 +1,8 @@
-package com.grusker.publicmessageboard.controllers;
+package com.grusker.publicmessageboard.controller;
 
-import com.grusker.publicmessageboard.dtos.MessageInputDto;
-import com.grusker.publicmessageboard.dtos.MessageOutputDto;
-import com.grusker.publicmessageboard.services.MessageService;
+import com.grusker.publicmessageboard.dto.MessageInputDto;
+import com.grusker.publicmessageboard.dto.MessageOutputDto;
+import com.grusker.publicmessageboard.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

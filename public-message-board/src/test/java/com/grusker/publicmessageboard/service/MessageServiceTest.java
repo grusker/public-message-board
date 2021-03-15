@@ -1,9 +1,9 @@
-package com.grusker.publicmessageboard.services;
+package com.grusker.publicmessageboard.service;
 
-import com.grusker.publicmessageboard.dtos.MessageInputDto;
-import com.grusker.publicmessageboard.dtos.MessageOutputDto;
-import com.grusker.publicmessageboard.entities.MessageEntity;
-import com.grusker.publicmessageboard.repositories.MessageRepository;
+import com.grusker.publicmessageboard.dto.MessageInputDto;
+import com.grusker.publicmessageboard.dto.MessageOutputDto;
+import com.grusker.publicmessageboard.entity.MessageEntity;
+import com.grusker.publicmessageboard.repository.MessageRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

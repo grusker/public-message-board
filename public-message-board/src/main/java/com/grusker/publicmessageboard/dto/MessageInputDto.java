@@ -1,4 +1,4 @@
-package com.grusker.publicmessageboard.dtos;
+package com.grusker.publicmessageboard.dto;
 
 public class MessageInputDto {
     private String content;

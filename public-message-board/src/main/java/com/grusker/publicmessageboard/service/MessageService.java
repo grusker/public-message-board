@@ -1,10 +1,10 @@
-package com.grusker.publicmessageboard.services;
+package com.grusker.publicmessageboard.service;
 
-import com.grusker.publicmessageboard.dtos.MessageInputDto;
-import com.grusker.publicmessageboard.dtos.MessageOutputDto;
-import com.grusker.publicmessageboard.entities.MessageEntity;
-import com.grusker.publicmessageboard.mappers.MessageMapper;
-import com.grusker.publicmessageboard.repositories.MessageRepository;
+import com.grusker.publicmessageboard.dto.MessageInputDto;
+import com.grusker.publicmessageboard.dto.MessageOutputDto;
+import com.grusker.publicmessageboard.entity.MessageEntity;
+import com.grusker.publicmessageboard.mapper.MessageMapper;
+import com.grusker.publicmessageboard.repository.MessageRepository;
 import com.grusker.publicmessageboard.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
