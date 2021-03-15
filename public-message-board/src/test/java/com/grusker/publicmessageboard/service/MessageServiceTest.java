@@ -3,6 +3,8 @@ package com.grusker.publicmessageboard.service;
 import com.grusker.publicmessageboard.dto.MessageInputDto;
 import com.grusker.publicmessageboard.dto.MessageOutputDto;
 import com.grusker.publicmessageboard.entity.MessageEntity;
+import com.grusker.publicmessageboard.exception.MessageNotFoundException;
+import com.grusker.publicmessageboard.exception.UserNotAuthorizedException;
 import com.grusker.publicmessageboard.repository.MessageRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,8 +43,9 @@ public class MessageServiceTest {
     }
 
     @Test
-    public void updateMessage_messageUpdatedSuccessfully() {
-        doReturn(true).when(messageRepository).existsById(any(Long.class));
+    public void updateMessage_IfMessageExistAndCreatedByGivenUser() throws MessageNotFoundException, UserNotAuthorizedException {
+        MessageEntity currentMessage = prepareMessageEntity((long) 1, "Current message", "Admin");
+        doReturn(Optional.of(currentMessage)).when(messageRepository).findById(any(Long.class));
 
         MessageEntity expectedMessage = prepareMessageEntity((long) 1, "Updated message", "Admin");
         doReturn(expectedMessage).when(messageRepository).save(any(MessageEntity.class));
@@ -53,13 +57,62 @@ public class MessageServiceTest {
     }
 
     @Test
-    public void deleteMessage_methodCalledOneTime() {
-        doReturn(true).when(messageRepository).existsById(any(Long.class));
+    @WithMockUser(username = "User", password = "user")
+    public void updateMessage_IfMessageExistButCreatedByDifferentUser() {
+        MessageEntity currentMessage = prepareMessageEntity((long) 1, "Current message", "Admin");
+        doReturn(Optional.of(currentMessage)).when(messageRepository).findById(any(Long.class));
+        try {
+            MessageOutputDto responseMessage = messageService.updateMessage((long) 1, new MessageInputDto());
+            assertFalse(responseMessage == null);
+        } catch (Exception ex) {
+            assertTrue(ex instanceof UserNotAuthorizedException);
+        }
+    }
+
+    @Test
+    public void updateMessage_IfMessageDoesNotExist() {
+        doReturn(Optional.empty()).when(messageRepository).findById(any(Long.class));
+        try {
+            MessageOutputDto responseMessage = messageService.updateMessage((long) 1, new MessageInputDto());
+            assertFalse(responseMessage == null);
+        } catch (Exception ex) {
+            assertTrue(ex instanceof MessageNotFoundException);
+        }
+    }
+
+    @Test
+    public void deleteMessage_DeleteByIdCalledOneTime() throws MessageNotFoundException, UserNotAuthorizedException {
+        MessageEntity currentMessage = prepareMessageEntity((long) 1, "Current message", "Admin");
+        doReturn(Optional.of(currentMessage)).when(messageRepository).findById(any(Long.class));
         doNothing().when(messageRepository).deleteById(any(Long.class));
 
         messageService.deleteMessage((long) 1);
 
         verify(messageRepository, times(1)).deleteById(eq((long)1));
+    }
+
+    @Test
+    @WithMockUser(username = "User", password = "user")
+    public void deleteMessage_IfMessageExistButCreatedByDifferentUser() {
+        MessageEntity currentMessage = prepareMessageEntity((long) 1, "Current message", "Admin");
+        doReturn(Optional.of(currentMessage)).when(messageRepository).findById(any(Long.class));
+        try {
+            MessageOutputDto responseMessage = messageService.updateMessage((long) 1, new MessageInputDto());
+            assertFalse(responseMessage == null);
+        } catch (Exception ex) {
+            assertTrue(ex instanceof UserNotAuthorizedException);
+        }
+    }
+
+    @Test
+    public void deleteMessage_IfMessageDoesNotExist() {
+        doReturn(Optional.empty()).when(messageRepository).findById(any(Long.class));
+        try {
+            MessageOutputDto responseMessage = messageService.updateMessage((long) 1, new MessageInputDto());
+            assertFalse(responseMessage == null);
+        } catch (Exception ex) {
+            assertTrue(ex instanceof MessageNotFoundException);
+        }
     }
 
     @Test

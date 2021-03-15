@@ -2,6 +2,8 @@ package com.grusker.publicmessageboard.controller;
 
 import com.grusker.publicmessageboard.dto.MessageInputDto;
 import com.grusker.publicmessageboard.dto.MessageOutputDto;
+import com.grusker.publicmessageboard.exception.MessageNotFoundException;
+import com.grusker.publicmessageboard.exception.UserNotAuthorizedException;
 import com.grusker.publicmessageboard.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,12 +24,12 @@ public class MessageController {
     }
 
     @PutMapping("/{id}")
-    public MessageOutputDto updateMessage(@PathVariable Long id, @RequestBody MessageInputDto messageInputDto) {
+    public MessageOutputDto updateMessage(@PathVariable Long id, @RequestBody MessageInputDto messageInputDto) throws MessageNotFoundException, UserNotAuthorizedException {
         return messageService.updateMessage(id, messageInputDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMessage(@PathVariable Long id) {
+    public void deleteMessage(@PathVariable Long id) throws MessageNotFoundException, UserNotAuthorizedException {
         messageService.deleteMessage(id);
     }
 
