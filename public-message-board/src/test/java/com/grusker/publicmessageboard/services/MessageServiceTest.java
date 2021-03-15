@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -18,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@WithMockUser(username = "Admin", password = "admin")
 public class MessageServiceTest {
     @Mock
     private MessageRepository messageRepository;
@@ -28,7 +30,7 @@ public class MessageServiceTest {
 
     @Test
     public void createMessage_messageCreateSuccessfully() {
-        MessageEntity expectedMessage = prepareMessageEntity((long) 1, "Created message");
+        MessageEntity expectedMessage = prepareMessageEntity((long) 1, "Created message", "Admin");
         doReturn(expectedMessage).when(messageRepository).save(any(MessageEntity.class));
 
         MessageOutputDto responseMessage = messageService.createMessage(new MessageInputDto());
@@ -41,7 +43,7 @@ public class MessageServiceTest {
     public void updateMessage_messageUpdatedSuccessfully() {
         doReturn(true).when(messageRepository).existsById(any(Long.class));
 
-        MessageEntity expectedMessage = prepareMessageEntity((long) 1, "Updated message");
+        MessageEntity expectedMessage = prepareMessageEntity((long) 1, "Updated message", "Admin");
         doReturn(expectedMessage).when(messageRepository).save(any(MessageEntity.class));
 
         MessageOutputDto responseMessage = messageService.updateMessage((long) 1, new MessageInputDto());
@@ -72,15 +74,16 @@ public class MessageServiceTest {
 
     private List<MessageEntity> prepareMessageEntityList() {
         List<MessageEntity> messageEntities = new ArrayList<>();
-        messageEntities.add(prepareMessageEntity((long) 1, "First message"));
-        messageEntities.add(prepareMessageEntity((long) 2, "Second message"));
+        messageEntities.add(prepareMessageEntity((long) 1, "First message", "Admin"));
+        messageEntities.add(prepareMessageEntity((long) 2, "Second message", "Admin"));
         return messageEntities;
     }
 
-    private MessageEntity prepareMessageEntity(Long id, String content) {
+    private MessageEntity prepareMessageEntity(Long id, String content, String loginUserName) {
         MessageEntity messageEntity = new MessageEntity();
         messageEntity.setId(id);
         messageEntity.setContent(content);
+        messageEntity.setCreateUserName(loginUserName);
         return messageEntity;
     }
 

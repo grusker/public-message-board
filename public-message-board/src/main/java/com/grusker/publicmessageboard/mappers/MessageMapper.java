@@ -4,6 +4,7 @@ import com.grusker.publicmessageboard.dtos.MessageInputDto;
 import com.grusker.publicmessageboard.dtos.MessageOutputDto;
 import com.grusker.publicmessageboard.entities.MessageEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -12,8 +13,11 @@ import java.util.List;
 public interface MessageMapper {
     MessageMapper INSTANCE = Mappers.getMapper(MessageMapper.class);
 
-    MessageEntity toMessageEntity(MessageInputDto messageInputDto);
-    MessageEntity toMessageEntity(Long id, MessageInputDto messageInputDto);
+    @Mapping(target = "createUserName", source = "loginUserName")
+    MessageEntity toMessageEntity(MessageInputDto messageInputDto, String loginUserName);
+
+    @Mapping(target = "createUserName", source = "loginUserName")
+    MessageEntity toMessageEntity(Long id, MessageInputDto messageInputDto, String loginUserName);
 
     MessageOutputDto toMessageOutputDto(MessageEntity messageEntity);
 

@@ -3,6 +3,7 @@ package com.grusker.publicmessageboard.dtos;
 public class MessageOutputDto {
     private Long id;
     private String content;
+    private String createUserName;
 
     public Long getId() {
         return id;
@@ -18,5 +19,13 @@ public class MessageOutputDto {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
     }
 }
