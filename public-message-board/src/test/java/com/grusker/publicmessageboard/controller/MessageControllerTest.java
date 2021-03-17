@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -41,7 +40,7 @@ public class MessageControllerTest {
 
     @Test
     public void createMessage_isCreated() throws Exception {
-        MessageOutputDto expectedMessageOutputDto = prepareMessageOutputDto((long) 1, "Created message");
+        MessageOutputDto expectedMessageOutputDto = prepareMessageOutputDto((long) 1, "Created message", "Admin");
         doReturn(expectedMessageOutputDto).when(messageService).createMessage(any(MessageInputDto.class));
 
         MessageInputDto messageInputDto = new MessageInputDto();
@@ -59,7 +58,7 @@ public class MessageControllerTest {
 
     @Test
     public void updateMessageById_isOk() throws Exception {
-        MessageOutputDto expectedMessageOutputDto = prepareMessageOutputDto((long) 1, "Updated message");
+        MessageOutputDto expectedMessageOutputDto = prepareMessageOutputDto((long) 1, "Updated message", "Admin");
 
         doReturn(expectedMessageOutputDto).when(messageService).updateMessage(any(Long.class), any(MessageInputDto.class));
 
@@ -100,17 +99,32 @@ public class MessageControllerTest {
         assertTrue(messageOutputDtoList.size() == expectedMessageDtoList.size());
     }
 
+    @Test
+    public void getOneMessage_isOk() throws Exception {
+        MessageOutputDto expectedMessage = prepareMessageOutputDto((long) 3, "Third message", "Admin");
+        doReturn(expectedMessage).when(messageService).getMessage(any(long.class));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/messages/3"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        MessageOutputDto messageOutputDto = objMapper.readValue(response, MessageOutputDto.class);
+        assertTrue(messageOutputDto.getId() == expectedMessage.getId());
+    }
+
     private List<MessageOutputDto> prepareMessageOutputDtoList() {
         List<MessageOutputDto> messageOutputDtoList = new ArrayList<>();
-        messageOutputDtoList.add(prepareMessageOutputDto((long) 1, "First message"));
-        messageOutputDtoList.add(prepareMessageOutputDto((long) 2, "Second message"));
+        messageOutputDtoList.add(prepareMessageOutputDto((long) 1, "First message", "Admin"));
+        messageOutputDtoList.add(prepareMessageOutputDto((long) 2, "Second message", "Admin"));
         return messageOutputDtoList;
     }
 
-    private MessageOutputDto prepareMessageOutputDto(Long id, String content) {
+    private MessageOutputDto prepareMessageOutputDto(Long id, String content, String createUserName) {
         MessageOutputDto messageOutputDto = new MessageOutputDto();
         messageOutputDto.setId(id);
         messageOutputDto.setContent(content);
+        messageOutputDto.setCreateUserName(createUserName);
         return messageOutputDto;
     }
 

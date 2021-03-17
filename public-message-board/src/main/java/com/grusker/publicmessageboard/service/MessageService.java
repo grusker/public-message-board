@@ -43,6 +43,11 @@ public class MessageService {
         return MessageMapper.INSTANCE.toMessageOutputDtos(messageEntities);
     }
 
+    public MessageOutputDto getMessage(Long id) {
+        MessageEntity messageEntity = messageRepository.getOne(id);
+        return MessageMapper.INSTANCE.toMessageOutputDto(messageEntity);
+    }
+
     private void validateMessageExistAndCreatedByUser(Long id) throws MessageNotFoundException, UserNotAuthorizedException {
         Optional<MessageEntity> currentMessage = messageRepository.findById(id);
         if (currentMessage.isEmpty()) {

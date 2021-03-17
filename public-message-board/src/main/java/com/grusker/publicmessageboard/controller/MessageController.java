@@ -38,4 +38,8 @@ public class MessageController {
         return messageService.getMessages();
     }
 
+    @GetMapping("/{id}")
+    public MessageOutputDto getMessage(@PathVariable Long id) {
+        return messageService.getMessage(id);
+    }
 }

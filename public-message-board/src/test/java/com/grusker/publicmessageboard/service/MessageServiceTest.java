@@ -125,6 +125,16 @@ public class MessageServiceTest {
         assertTrue(responseMessages.size() == expectedMessages.size());
     }
 
+    @Test
+    public void getMessage_returnedSuccessfully() {
+        MessageEntity expectedMessage = prepareMessageEntity((long) 3, "Third message", "Admin");
+        doReturn(expectedMessage).when(messageRepository).getOne(any(long.class));
+
+        MessageOutputDto responseMessage = messageService.getMessage((long) 3);
+        assertFalse(responseMessage == null);
+        assertEquals(responseMessage.getId(), expectedMessage.getId());
+    }
+
     private List<MessageEntity> prepareMessageEntityList() {
         List<MessageEntity> messageEntities = new ArrayList<>();
         messageEntities.add(prepareMessageEntity((long) 1, "First message", "Admin"));
